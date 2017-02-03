@@ -1,7 +1,7 @@
 FROM resin/rpi-raspbian:latest
 
 ENV METRICBEAT_VERSION 5.2
-
+ENV GOPATH /go
 RUN apt-get update \
 	&& apt-get install -y \
 	curl \
