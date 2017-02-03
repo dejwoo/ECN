@@ -2,6 +2,7 @@ FROM resin/rpi-raspbian:latest
 
 ENV METRICBEAT_VERSION 5.2
 ENV GOPATH /go
+ENV GOROOT /usr/local/go
 RUN apt-get update \
 	&& apt-get install -y \
 	curl \
@@ -13,7 +14,8 @@ RUN apt-get update \
 	&& apt-get clean
 
 
-RUN mkdir -p ${GOPATH}/src/github.com/elastic
+RUN mkdir -p {${GOPATH}/src/github.com/elastic, ${GOPATH}/bin}
+ENV PATH=${GOPATH}/bin:${GOROOT}/bin:$PATH
 WORKDIR ${GOPATH}/src/github.com/elastic
 RUN git clone https://github.com/elastic/beats.git
 WORKDIR ${GOPATH}/src/github.com/elastic/beats/metricbeat
