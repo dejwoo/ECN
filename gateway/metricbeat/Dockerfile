@@ -7,7 +7,7 @@ RUN apt-get update \
 	curl \
 	git \
 	golang \
-	build-essentials \
+	build-essential \
 	python \
 	python-pip \
 	&& apt-get clean
