@@ -1,8 +1,5 @@
 FROM resin/rpi-raspbian:latest
 
-ARG ELASTIC_VERSION
-ARG DOWNLOAD_URL
-
 ENV METRICBEAT_VERSION 5.2
 
 RUN apt-get update \
@@ -11,17 +8,19 @@ RUN apt-get update \
 	git \
 	golang \
 	build-essentials \
+	python \
+	python-pip \
 	&& apt-get clean
 
 
 RUN mkdir -p ${GOPATH}/src/github.com/elastic
 RUN cd ${GOPATH}/src/github.com/elastic
 RUN git clone https://github.com/elastic/beats.git
+RUN make
+RUN pip install virtualenv
+RUN make update
+RUN make install
 
-
-RUN curl -Lso - ${DOWNLOAD_URL} | \
-    tar zxf - -C /usr/share && \
-    mv /usr/share/metricbeat-5.2.0-linux-x86_64 /usr/share/metricbeat
 ENV PATH=/usr/share/metricbeat:$PATH
 
 COPY config/metricbeat.yml /usr/share/metricbeat/
