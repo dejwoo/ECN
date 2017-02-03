@@ -1,0 +1,20 @@
+sudo: required
+services:
+- docker
+language: bash
+script:
+# prepare qemu
+- docker run --rm --privileged multiarch/qemu-user-static:register --reset
+# build image metricbeat
+- docker build -t dejwoo/rpi-metricbeat gateway/metricbeat
+# test image metricbeat
+- docker run dejwoo/rpi-metricbeat metricbeat -version
+# push image metricbeat
+- >
+  if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "true" ]; then
+    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+    TAG=$(grep "ENV METRICBEAT_VERSION" Dockerfile | awk 'NF>1{print $NF}')
+    docker tag dejwoo/rpi-metricbeat dejwoo/rpi-metricbeat:$TAG
+    docker push dejwoo/rpi-metricbeat:$TAG
+    docker push dejwoo/rpi-metricbeat
+  fi
