@@ -14,7 +14,8 @@ RUN apt-get update \
 	&& apt-get clean
 
 
-RUN mkdir -p {${GOPATH}/src/github.com/elastic, ${GOPATH}/bin}
+RUN mkdir -p ${GOPATH}/src/github.com/elastic
+RUN mkdir -p ${GOPATH}/bin
 ENV PATH=${GOPATH}/bin:${GOROOT}/bin:$PATH
 WORKDIR ${GOPATH}/src/github.com/elastic
 RUN git clone https://github.com/elastic/beats.git
