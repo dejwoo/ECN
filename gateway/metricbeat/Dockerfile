@@ -14,9 +14,9 @@ RUN apt-get update \
 
 
 RUN mkdir -p ${GOPATH}/src/github.com/elastic
-RUN cd ${GOPATH}/src/github.com/elastic
+WORKDIR ${GOPATH}/src/github.com/elastic
 RUN git clone https://github.com/elastic/beats.git
-RUN cd ${GOPATH}/src/github.com/elastic/beats/metricbeat
+WORKDIR ${GOPATH}/src/github.com/elastic/beats/metricbeat
 RUN make
 RUN pip install virtualenv
 RUN make update
