@@ -17,6 +17,8 @@ RUN mkdir -p ${GOPATH}/src/github.com/elastic
 WORKDIR ${GOPATH}/src/github.com/elastic
 RUN git clone https://github.com/elastic/beats.git
 WORKDIR ${GOPATH}/src/github.com/elastic/beats/metricbeat
+RUN curl https://glide.sh/get | sh
+RUN glide install
 RUN make
 RUN pip install virtualenv
 RUN make update
